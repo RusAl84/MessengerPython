@@ -15,7 +15,7 @@ def dafault_route():
 @app.route('/status')
 def status():
     return {
-        'messages_count': len(messages)
+        'messages_count': len(ListOfMessages)
     }
 
 
