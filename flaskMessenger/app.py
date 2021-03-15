@@ -9,7 +9,8 @@ ListOfMessages = []
 
 @app.route('/')
 def dafault_route():
-    return 'Messenger Flask server is running! <br> <a href="/status">Check status</a>'
+    return 'Messenger Flask server is running! ' \
+           '<br> <a href="/status">Check status</a>'
 
 
 @app.route('/status')
@@ -23,13 +24,12 @@ def status():
 @app.route("/api/Messanger", methods=['POST'])
 def SendMessage():
     msg = request.json
-
     if len(msg['MessageText']) > 0:
         # messages.append({'username': UserName, 'text': MessageText, 'TimeStamp': time.time()})
         # messages.append({ "UserName":"RusAl","MessageText":"Privet na sto let!!!","TimeStamp":"2021-03-05T18:23:10.932973Z"})
         ListOfMessages.append(msg)
         print(msg)
-        msgtext = f"{msg['UserName']} <{msg['MessageText']}>: {msg['TimeStamp']}"
+        msgtext = f"{msg['UserName']} <{msg['TimeStamp']}>: {msg['MessageText']}"
         print(f"Всего сообщений: {len(ListOfMessages)} Посланное сообщение: {msgtext}")
         return f"Сообщение отослано успшно. Всего сообщений: {len(ListOfMessages)} ", 200
     else:
@@ -37,18 +37,15 @@ def SendMessage():
 
 
 # получение сообщений
-@app.route('/GetMessage')
-def GetMessage():
-    id = float(request.args['id'])
-    result = []
-    if id > 0 and id < len(messages):
-        return {
-            'messages': messages[id]
-        }
+@app.route("/api/Messanger/<int:id>")
+def GetMessage(id):
+    print(id)
+    if id >= 0 and id < len(ListOfMessages):
+        print(ListOfMessages[id])
+        return ListOfMessages[id], 200
     else:
-        return {
-            'messages': "Not found"
-        }
+        return "Not found", 400
+
 
 
 if __name__ == '__main__':
